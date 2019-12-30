@@ -1,0 +1,68 @@
+env/
+
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite3
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+.DS_STORE
+node_modules
+scripts/flow/*/.flowconfig
+*~
+*.pyc
+.grunt
+_SpecRunner.html
+__benchmarks__
+build/
+remote-repo/
+coverage/
+.module-cache
+fixtures/dom/public/react-dom.js
+fixtures/dom/public/react.js
+test/the-files-to-test.generated.js
+*.log*
+chrome-user-data
+*.sublime-project
+*.sublime-workspace
+.idea
+*.iml
+.vscode
+*.swp
+*.swo
+*.cache
+dist/
