@@ -1,4 +1,5 @@
 env/
+venv/
 
 
 # Compiled source #
@@ -65,4 +66,3 @@ chrome-user-data
 *.swp
 *.swo
 *.cache
-dist/
