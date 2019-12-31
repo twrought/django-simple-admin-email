@@ -1,0 +1,43 @@
+{% extends "admin/base_site.html" %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Confirm Email Send</title>
+</head>
+
+{% block content %}
+<form action="" method="post">
+  {% csrf_token %}
+<p>
+Select the recipients for your email.
+</p>  
+ 
+    <p>
+      {{ u_form }}
+    </p>
+    
+    <input type="hidden" name="action" value="confirm_mail_send" />
+    <input type="hidden" name="post" value="yes" />
+    {% for item in email_list %}
+    <input type="hidden" name="email_list_subject" value="{{ item.subject }}" />
+    <input type="hidden" name="email_list_body" value="{{ item.body }}" />
+    {% endfor %}
+    <input type="submit" value="Confirm Mail Send" />
+    <p>
+This email will be sent to the users above:
+    </p> 
+    {% for item in email_list %}
+        {{ item }}
+        <br>
+        {{ item.body}}
+    {% endfor %}
+</form>
+{% endblock %}
+<body>
+    
+</body>
+</html>
