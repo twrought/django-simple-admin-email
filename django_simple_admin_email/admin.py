@@ -47,17 +47,24 @@ class EmailPage(admin.ModelAdmin):
                 recipients = form.cleaned_data['recipients']
                 email_subject = request.POST.get('email_list_subject')
                 email_body = request.POST.get('email_list_body')
-                message_bit = "%s emails were" % len(recipients)
-                message_list = []   
+                message_list = []
+                failure_list = []
                 for item in recipients:
-                    message = (email_subject, 
-                    email_body, 
-                    settings.EMAIL_HOST_USER, 
-                    [item.email])
-                    message_list.append(message)
+                    if item.email:
+                        message = (email_subject, 
+                        email_body, 
+                        settings.EMAIL_HOST_USER, 
+                        [item.email])
+                        message_list.append(message)
+                    else:
+                        failure_list.append(item.username)
                 for item in message_list:
                     send_mass_mail((message_list), fail_silently=False)
-                self.message_user(request, "%s successfully emailed." % message_bit)
+                failure_message_bit = "%s emails were" % len(failure_list)
+                success_message_bit = "%s emails were" % len(message_list)
+                self.message_user(request, "%s successfully emailed." % success_message_bit)
+                self.message_user(request, "%s unsuccessfully sent. No email addresses for these users:" % failure_message_bit)
+                self.message_user(request, failure_list)
                 return HttpResponseRedirect('/admin/django_simple_admin_email/email/')
         else:
             raise ViewDoesNotExist('Only POST requests are allowed')
