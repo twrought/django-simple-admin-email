@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.shortcuts import render
-from django.core.mail import send_mass_mail
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ViewDoesNotExist
 from django.conf import settings
@@ -44,24 +44,23 @@ class EmailPage(admin.ModelAdmin):
         if request.method == 'POST':
             form = SendEmailForm(request.POST)
             if form.is_valid():
-                recipients = form.cleaned_data['recipients']
+                recipients = []
+                failure_list = []
+                unfiltered_rec = form.cleaned_data['recipients']
+                for item in unfiltered_rec:
+                    if item.email:
+                        recipients.append(item.email)
+                    else: 
+                        failure_list.append(item.username)
                 email_subject = request.POST.get('email_list_subject')
                 email_body = request.POST.get('email_list_body')
-                message_list = []
-                failure_list = []
                 for item in recipients:
-                    if item.email:
-                        message = (email_subject, 
-                        email_body, 
-                        settings.EMAIL_HOST_USER, 
-                        [item.email])
-                        message_list.append(message)
-                    else:
-                        failure_list.append(item.username)
-                for item in message_list:
-                    send_mass_mail((message_list), fail_silently=False)
+                    lst = [item]
+                    send_mail(subject=email_subject,
+                        message=email_body, from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=lst)
                 failure_message_bit = "%s emails were" % len(failure_list)
-                success_message_bit = "%s emails were" % len(message_list)
+                success_message_bit = "%s emails were" % len(recipients)
                 self.message_user(request, "%s successfully emailed." % success_message_bit)
                 self.message_user(request, "%s unsuccessfully sent. No email addresses for these users:" % failure_message_bit)
                 self.message_user(request, failure_list)
