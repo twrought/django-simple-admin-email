@@ -64,7 +64,7 @@ class EmailPage(admin.ModelAdmin):
                 self.message_user(request, "%s successfully emailed." % success_message_bit)
                 self.message_user(request, "%s unsuccessfully sent. No email addresses for these users:" % failure_message_bit)
                 self.message_user(request, failure_list)
-                return HttpResponseRedirect('/admin/django_simple_admin_email/email/')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
             raise ViewDoesNotExist('Only POST requests are allowed')
 
